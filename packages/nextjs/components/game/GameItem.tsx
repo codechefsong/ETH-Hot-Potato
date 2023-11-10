@@ -1,6 +1,9 @@
+import { useRouter } from "next/router";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 export const GameItem = ({ data }: any) => {
+  const router = useRouter();
+
   const { writeAsync: joinMatch } = useScaffoldContractWrite({
     contractName: "TowerTumble",
     functionName: "joinMatch",
@@ -8,6 +11,7 @@ export const GameItem = ({ data }: any) => {
     onBlockConfirmation: txnReceipt => {
       console.log("📦 Transaction blockHash", txnReceipt.blockHash);
       console.log(txnReceipt);
+      router.push("/match/" + data.id.toString());
     },
   });
 
