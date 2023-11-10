@@ -3,7 +3,7 @@ pragma solidity >=0.8.0 <0.9.0;
 
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract TowerTumble {
+contract ETHHotPotato {
   using Counters for Counters.Counter;
   Counters.Counter public numberOfMatches;
 

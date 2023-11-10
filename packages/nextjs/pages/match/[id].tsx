@@ -6,13 +6,13 @@ const MatchRoom: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const { data: matchData } = useScaffoldContractRead({
-    contractName: "TowerTumble",
+    contractName: "ETHHotPotato",
     functionName: "getMatcheByID",
     args: [id as any],
   });
 
   const { writeAsync: passPotato } = useScaffoldContractWrite({
-    contractName: "TowerTumble",
+    contractName: "ETHHotPotato",
     functionName: "passPotato",
     args: [id as any],
     onBlockConfirmation: txnReceipt => {

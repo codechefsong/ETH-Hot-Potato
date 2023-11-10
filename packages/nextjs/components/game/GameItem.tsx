@@ -5,7 +5,7 @@ export const GameItem = ({ data }: any) => {
   const router = useRouter();
 
   const { writeAsync: joinMatch } = useScaffoldContractWrite({
-    contractName: "TowerTumble",
+    contractName: "ETHHotPotato",
     functionName: "joinMatch",
     args: [data.id],
     onBlockConfirmation: txnReceipt => {

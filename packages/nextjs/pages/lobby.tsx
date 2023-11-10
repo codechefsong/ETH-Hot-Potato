@@ -5,12 +5,12 @@ import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaf
 
 const Lobby: NextPage = () => {
   const { data: getMatches } = useScaffoldContractRead({
-    contractName: "TowerTumble",
+    contractName: "ETHHotPotato",
     functionName: "getMatches",
   });
 
   const { writeAsync: createMatch } = useScaffoldContractWrite({
-    contractName: "TowerTumble",
+    contractName: "ETHHotPotato",
     functionName: "createMatch",
     onBlockConfirmation: txnReceipt => {
       console.log("📦 Transaction blockHash", txnReceipt.blockHash);
