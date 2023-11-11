@@ -15,6 +15,7 @@ contract ETHHotPotato {
     uint256 numberOfPlayers;
     uint256 prizePool;
     uint256 currentPosition;
+    address[] players;
     bool isFinish;
   }
 	
@@ -30,14 +31,19 @@ contract ETHHotPotato {
     return matchList[_matchId];
   }
 
+  function getPlayersByMatchID(uint256 _matchId) public view returns (address[] memory) {
+    return matchList[_matchId].players;
+  }
+
   function createMatch() external {
     uint256 newMatchId = numberOfMatches.current();
-    matchList.push(Match(newMatchId, 0, 0, 0, false));
+    matchList.push(Match(newMatchId, 0, 0, 0, new address[](0), false));
     numberOfMatches.increment();
   }
 
   function joinMatch(uint256 _matchId) external {
     matchList[_matchId].numberOfPlayers += 1;
+    matchList[_matchId].players.push(msg.sender);
   }
 
   function passPotato(uint256 _matchId) external {
