@@ -1,8 +1,16 @@
 import { useRouter } from "next/router";
-import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+import { useAccount } from "wagmi";
+import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 export const GameItem = ({ data }: any) => {
   const router = useRouter();
+  const { address } = useAccount();
+
+  const { data: isJoined } = useScaffoldContractRead({
+    contractName: "ETHHotPotato",
+    functionName: "checkJoinMatch",
+    args: [data.id, address],
+  });
 
   const { writeAsync: joinMatch } = useScaffoldContractWrite({
     contractName: "ETHHotPotato",
@@ -24,12 +32,19 @@ export const GameItem = ({ data }: any) => {
         <p>{data.isMatch ? "Yes" : "No"}</p>
       </td>
       <td className="w-2/12 md:py-4">
-        <button
+        {!isJoined
+          ? <button
+            className="py-2 px-16 bg-green-500 rounded baseline hover:bg-green-300 disabled:opacity-50"
+            onClick={() => joinMatch()}
+          >
+            Join
+          </button>
+          : <button
           className="py-2 px-16 bg-green-500 rounded baseline hover:bg-green-300 disabled:opacity-50"
-          onClick={() => joinMatch()}
+          onClick={() => router.push("/match/" + data.id.toString())}
         >
-          Join
-        </button>
+          View
+        </button>}
       </td>
     </tr>
   );

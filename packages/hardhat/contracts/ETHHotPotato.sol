@@ -40,6 +40,16 @@ contract ETHHotPotato {
     return block.timestamp;
   }
 
+  function checkJoinMatch(uint256 _matchId, address _player) public view returns (bool) {
+    for (uint i = 0; i < matchList[_matchId].players.length; i++) {
+      if (matchList[_matchId].players[i] == _player) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   function createMatch() external {
     uint256 newMatchId = numberOfMatches.current();
     matchList.push(Match(newMatchId, 0, 0, 0, 0, new address[](0), false));
