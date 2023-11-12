@@ -15,6 +15,7 @@ contract ETHHotPotato {
     uint256 numberOfPlayers;
     uint256 prizePool;
     uint256 currentPosition;
+    uint256 blocknumber;
     address[] players;
     bool isFinish;
   }
@@ -35,9 +36,13 @@ contract ETHHotPotato {
     return matchList[_matchId].players;
   }
 
+  function getBlockTime() public view returns (uint256){
+    return block.timestamp;
+  }
+
   function createMatch() external {
     uint256 newMatchId = numberOfMatches.current();
-    matchList.push(Match(newMatchId, 0, 0, 0, new address[](0), false));
+    matchList.push(Match(newMatchId, 0, 0, 0, 0, new address[](0), false));
     numberOfMatches.increment();
   }
 
@@ -47,9 +52,16 @@ contract ETHHotPotato {
   }
 
   function passPotato(uint256 _matchId) external {
-    matchList[_matchId].currentPosition += 1;
-    if (matchList[_matchId].currentPosition >= matchList[_matchId].numberOfPlayers) {
-      matchList[_matchId].currentPosition = 0;
+    if (matchList[_matchId].blocknumber == 0) {
+      matchList[_matchId].blocknumber = block.timestamp + 30;
+    }
+    else if (matchList[_matchId].blocknumber < block.timestamp) {
+      matchList[_matchId].isFinish = true;
+    } else {
+      matchList[_matchId].currentPosition += 1;
+      if (matchList[_matchId].currentPosition >= matchList[_matchId].numberOfPlayers) {
+        matchList[_matchId].currentPosition = 0;
+      }
     }
   }
 

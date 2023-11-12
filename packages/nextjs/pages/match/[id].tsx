@@ -18,6 +18,11 @@ const MatchRoom: NextPage = () => {
     args: [id as any],
   });
 
+  const { data: blockTime } = useScaffoldContractRead({
+    contractName: "ETHHotPotato",
+    functionName: "getBlockTime",
+  });
+
   const { writeAsync: passPotato } = useScaffoldContractWrite({
     contractName: "ETHHotPotato",
     functionName: "passPotato",
@@ -41,6 +46,8 @@ const MatchRoom: NextPage = () => {
           <Address key={p} address={p} />
         ))}
         <p>Game Over: {matchData?.isFinish ? "Yes" : "No"}</p>
+        <p>Current Time: {blockTime?.toString()}</p>
+        <p>Deadline: {matchData?.blocknumber.toString()}</p>
 
         <button
           className="py-2 px-16 mb-1 mt-3 mr-3 bg-green-500 rounded baseline hover:bg-green-300 disabled:opacity-50"
