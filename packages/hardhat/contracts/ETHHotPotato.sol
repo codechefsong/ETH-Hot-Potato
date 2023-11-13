@@ -50,6 +50,16 @@ contract ETHHotPotato {
     return false;
   }
 
+  function getPlayerID(uint256 _matchId, address _player) public view returns (uint) {
+    for (uint i = 0; i < matchList[_matchId].players.length; i++) {
+      if (matchList[_matchId].players[i] == _player) {
+        return i;
+      }
+    }
+
+    return 0;
+  }
+
   function createMatch() external {
     uint256 newMatchId = numberOfMatches.current();
     matchList.push(Match(newMatchId, 0, 0, 0, 0, new address[](0), false));
@@ -66,7 +76,17 @@ contract ETHHotPotato {
       matchList[_matchId].blocknumber = block.timestamp + 30;
     }
     else if (matchList[_matchId].blocknumber < block.timestamp) {
-      matchList[_matchId].isFinish = true;
+      uint playerIndex = getPlayerID(_matchId, msg.sender);
+      for (uint i = playerIndex; i < matchList[_matchId].players.length - 1; i++) {
+        matchList[_matchId].players[i] = matchList[_matchId].players[i + 1];
+      }
+
+      matchList[_matchId].players.pop();
+      matchList[_matchId].blocknumber = block.timestamp + 30;
+
+      if (matchList[_matchId].players.length <= 1) {
+        matchList[_matchId].isFinish = true;
+      }
     } else {
       matchList[_matchId].currentPosition += 1;
       if (matchList[_matchId].currentPosition >= matchList[_matchId].numberOfPlayers) {

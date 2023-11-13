@@ -32,19 +32,21 @@ export const GameItem = ({ data }: any) => {
         <p>{data.isMatch ? "Yes" : "No"}</p>
       </td>
       <td className="w-2/12 md:py-4">
-        {!isJoined
-          ? <button
+        {!isJoined ? (
+          <button
             className="py-2 px-16 bg-green-500 rounded baseline hover:bg-green-300 disabled:opacity-50"
             onClick={() => joinMatch()}
           >
             Join
           </button>
-          : <button
-          className="py-2 px-16 bg-green-500 rounded baseline hover:bg-green-300 disabled:opacity-50"
-          onClick={() => router.push("/match/" + data.id.toString())}
-        >
-          View
-        </button>}
+        ) : (
+          <button
+            className="py-2 px-16 bg-green-500 rounded baseline hover:bg-green-300 disabled:opacity-50"
+            onClick={() => router.push("/match/" + data.id.toString())}
+          >
+            View
+          </button>
+        )}
       </td>
     </tr>
   );
