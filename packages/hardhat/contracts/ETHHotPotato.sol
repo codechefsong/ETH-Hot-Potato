@@ -19,6 +19,8 @@ contract ETHHotPotato {
     address[] players;
     bool isFinish;
   }
+
+  event PlayerEliminateEvent(address player, uint256 time);
 	
   constructor(address _owner) {
     owner = _owner;
@@ -83,6 +85,8 @@ contract ETHHotPotato {
 
       matchList[_matchId].players.pop();
       matchList[_matchId].blocknumber = block.timestamp + 30;
+
+      emit PlayerEliminateEvent(msg.sender, block.timestamp);
 
       if (matchList[_matchId].players.length <= 1) {
         matchList[_matchId].isFinish = true;

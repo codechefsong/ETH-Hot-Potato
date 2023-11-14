@@ -1,11 +1,15 @@
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
+import { useAccount } from "wagmi";
 import { Address } from "~~/components/scaffold-eth";
-import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+import { useScaffoldContractRead, useScaffoldContractWrite, useScaffoldEventSubscriber } from "~~/hooks/scaffold-eth";
+import { notification } from "~~/utils/scaffold-eth";
 
 const MatchRoom: NextPage = () => {
   const router = useRouter();
+  const { address } = useAccount();
   const { id } = router.query;
+
   const { data: matchData } = useScaffoldContractRead({
     contractName: "ETHHotPotato",
     functionName: "getMatcheByID",
@@ -33,6 +37,15 @@ const MatchRoom: NextPage = () => {
     },
   });
 
+  useScaffoldEventSubscriber({
+    contractName: "ETHHotPotato",
+    eventName: "PlayerEliminateEvent",
+    listener: (data: any) => {
+      console.log(data[0].args);
+      if (data[0].args.player === address) notification.error(`You been eliminated`);
+    },
+  });
+
   return (
     <div className="flex items-center flex-col flex-grow pt-7">
       <div className="px-5">
@@ -41,9 +54,12 @@ const MatchRoom: NextPage = () => {
         </h1>
 
         <p>Current Position: {matchData?.currentPosition.toString()}</p>
-        <p>Players:</p>
-        {players?.map(p => (
-          <Address key={p} address={p} />
+        <p className="mb-0 font-bold">Players:</p>
+        {players?.map((p, index) => (
+          <div key={index} className="flex">
+            <Address address={p} />
+            {matchData?.currentPosition.toString() === index.toString() && <p className="ml-2">Current</p>}
+          </div>
         ))}
         <p>Game Over: {matchData?.isFinish ? "Yes" : "No"}</p>
         <p>Current Time: {blockTime?.toString()}</p>
