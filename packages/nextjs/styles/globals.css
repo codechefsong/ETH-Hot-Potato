@@ -30,3 +30,19 @@ p {
 .btn.btn-ghost {
   @apply shadow-none;
 }
+
+.circle {
+  position: relative;
+  width: 500px;
+  height: 500px;
+}
+
+.circle-element {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

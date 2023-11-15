@@ -54,17 +54,9 @@ const MatchRoom: NextPage = () => {
         </h1>
 
         <p>Current Position: {matchData?.currentPosition.toString()}</p>
-        <p className="mb-0 font-bold">Players:</p>
-        {players?.map((p, index) => (
-          <div key={index} className="flex">
-            <Address address={p} />
-            {matchData?.currentPosition.toString() === index.toString() && <p className="ml-2">Current</p>}
-          </div>
-        ))}
         <p>Game Over: {matchData?.isFinish ? "Yes" : "No"}</p>
         <p>Current Time: {blockTime?.toString()}</p>
         <p>Deadline: {matchData?.blocknumber?.toString()}</p>
-
         <button
           className="py-2 px-16 mb-1 mt-3 mr-3 bg-green-500 rounded baseline hover:bg-green-300 disabled:opacity-50"
           onClick={() => passPotato()}
@@ -77,6 +69,25 @@ const MatchRoom: NextPage = () => {
         >
           Back
         </button>
+        <p className="mb-0 font-bold">Players:</p>
+        <div className="circle">
+          {players?.map((p, index) => (
+            <div
+              key={index}
+              className="circle-element"
+              style={{
+                transform: `rotate(${(360 / players.length) * index}deg) translate(120px) rotate(-${
+                  (360 / players.length) * index
+                }deg)`,
+                marginLeft: "225px",
+                marginTop: "120px",
+                backgroundColor: matchData?.currentPosition.toString() === index.toString() ? "#958f1c" : "transparent",
+              }}
+            >
+              <Address address={p} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
