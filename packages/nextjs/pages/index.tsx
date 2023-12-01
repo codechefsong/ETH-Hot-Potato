@@ -17,7 +17,7 @@ const Home: NextPage = () => {
           <p className="text-center text-lg">Be the last player remaining without the hot potato when the game ends</p>
           <div className="flex justify-center mb-2">
             <Link
-              href="/example-ui"
+              href="/lobby"
               passHref
               className=" py-2 px-16 mb-1 mt-3 bg-green-500 rounded baseline hover:bg-green-400 disabled:opacity-50"
             >
